@@ -162,8 +162,13 @@ def optimizeCollections(username, write=False):
 if __name__ == '__main__':    
     username = argv[1]        
     optimized = optimizeCollections(username, write=True)
+    try:
+        f = open("key.txt", "r")
+    except:
+        auth = None
+    else:
+        auth = f.read()
     
-    auth = None
     if auth:   
         user_properties = get_user_properties_data(auth)        
         optimized = check_active_colletions(user_properties, optimized)

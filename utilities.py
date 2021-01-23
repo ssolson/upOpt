@@ -359,16 +359,19 @@ def check_active_colletions(user_properties, optimized):
     for collectionID, props in optimized['ILPSolution'].items():
         for propID in props:
             address = active[active.prop_id == int(propID)].full_address
-            address = str(address.values[0])
-            collection = allCollections[allCollections['id'] == collectionID]
-            collectionName = collection.name.values[0]
-            yieldBoost = collection.yield_boost.values[0]
-            solutionInActive = any(active.prop_id == int(propID))
-            if solutionInActive:
-                activeBoost = active[active.prop_id == int(propID)].collection_boost
-                boostMatch = float(activeBoost) == yieldBoost
-                if boostMatch:
-                    optimized['collections'][collectionID]['properties'][address]['active'] = True
+            if any(address): 
+                address = str(address.values[0])
+            
+            
+                collection = allCollections[allCollections['id'] == collectionID]
+                collectionName = collection.name.values[0]
+                yieldBoost = collection.yield_boost.values[0]
+                solutionInActive = any(active.prop_id == int(propID))
+                if solutionInActive:
+                    activeBoost = active[active.prop_id == int(propID)].collection_boost
+                    boostMatch = float(activeBoost) == yieldBoost
+                    if boostMatch:
+                        optimized['collections'][collectionID]['properties'][address]['active'] = True
     return optimized  
     
     
