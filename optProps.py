@@ -57,7 +57,7 @@ def optimizeCollections(username, write=False):
     lowYieldIDs = allCollections[allCollections.yield_boost <= 1.4].id.to_list()
     optimizeOver= set(dvData.collectionID.values.tolist()) - set(lowYieldIDs)
     highYieldDVs = dvData[dvData.collectionID.isin(optimizeOver)]
-
+    
     prob = optimizeCollection(highYieldDVs, allCollections)
     # Each of the variables is printed with it's resolved optimum value
     for collectionID in highYieldDVs.collectionID.unique(): 
