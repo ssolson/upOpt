@@ -49,7 +49,6 @@ def optimizeCollections(username, write=False):
     #=======================================================================
     dvData = allDVData.copy(deep=True)
     solutions={}
-
     #-----------------------------------------------------------------------
     # High Yield DVs
     #-----------------------------------------------------------------------
@@ -73,15 +72,15 @@ def optimizeCollections(username, write=False):
                         
             propertiesRemaining.drop(index=int(propertyID), inplace=True)
 
-    #-----------------------------------------------------------------------
+    #-------------------------------------------------------------------
     # Low Yield DVs
-    #-----------------------------------------------------------------------
+    #-------------------------------------------------------------------
     kingData = kingOfTheStreet(propertiesRemaining)
     allDVData = allDVData.append(kingData)
     dvData = dvData.append(kingData)
     
     lowYieldDVs = dvData[dvData.collectionID.isin(lowYieldIDs)]   
-    
+    #import ipdb; ipdb.set_trace()
     prob = optimizeCollection(lowYieldDVs, allCollections)
     # Each of the variables is printed with it's resolved optimum value
     for collectionID in lowYieldDVs.collectionID.unique(): 

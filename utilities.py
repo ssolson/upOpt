@@ -37,7 +37,7 @@ def getUserProperty(username):
 	properties: DataFrame
 	    Dataframe of all user properties
 	'''
-    response = requests.get(f'https://api.uplandworld.me/upland/{username}' )
+    response = requests.get(f'https://api.upx.world/upland/{username}' )
     propsDict = response.json()['data']['properties'] 	
     properties = pd.DataFrame(propsDict) 
     properties = properties.replace('Unknown', np.NaN)
@@ -69,7 +69,7 @@ def defineDV(yield_per_hour,collectionID, yieldBoost, propID,
     Returns
     -------
     Dictionary
-        Dictionray with araible defined
+        Dictionray with varaible defined
     '''
     return { 'yield_per_hour' : yield_per_hour,
              'collectionID': collectionID,
@@ -212,8 +212,20 @@ def collectionsDict(properties, allCollections, NKeep=30):
                 dvDict[decisionVariable] = defineDV( yield_per_hour,
                                                collectionID, collectionBoost, 
                                                propID, cityID, streetID, 
-                                               address )                            
-        else:                        
+                                               address )
+
+            elif cityID == 6:
+                # Manually add brooklyner 
+                collectionID = 72
+                collectionBoost = 1.25
+                decisionVariable = f'{propID}_{collectionID}_{cityID}'
+                dvDict[decisionVariable] = defineDV( yield_per_hour,
+                                               collectionID, collectionBoost, 
+                                               propID, cityID, streetID, 
+                                               address )
+                                               
+        else:         
+            #import ipdb; ipdb.set_trace()        
             for idx, collectionDetails in propCollections.iterrows():                
                 collectionID = collectionDetails['id']
                 collectionBoost = collectionDetails.yield_boost
@@ -223,7 +235,17 @@ def collectionsDict(properties, allCollections, NKeep=30):
                                                collectionID, collectionBoost, 
                                                propID, cityID, streetID, 
                                                address )
-                     
+            # Manually Add City Pro ['21']
+            if not any(propCollections.id == 21):
+                collectionID = 21
+                collectionBoost = 1.4
+                decisionVariable = f'{propID}_{collectionID}_{cityID}'
+                dvDict[decisionVariable] = defineDV( yield_per_hour,
+                                                   collectionID, collectionBoost, 
+                                                   propID, cityID, streetID, 
+                                                   address )
+                
+        #import ipdb; ipdb.set_trace()             
     dvData = pd.DataFrame(dvDict).T
 
     dvData['collectionID']=dvData.astype({'collectionID':'int32'}).collectionID
