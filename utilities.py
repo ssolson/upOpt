@@ -342,10 +342,8 @@ def write_solution(username, solution):
             collectionName = solution['collections'][collectionID]['name']
             N = solution['collections'][collectionID]['number_needed']
 
-            if isinstance(monthlyBoost, float): 
-                monthlyBoost = monthlyBoost.round(0)
             f.write('=======================================================\n') 
-            f.write(f'{collectionName}({collectionID}): [{N} Properties: {monthlyBoost} UPX/month]\n')
+            f.write(f'{collectionName}({collectionID}): [{N} Properties: {monthlyBoost.round(0)} UPX/month]\n')
             f.write('=======================================================\n')
             i=0
             for address in solution['collections'][collectionID]['properties']:      
