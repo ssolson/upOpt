@@ -182,7 +182,8 @@ def collectionsDict(properties, allCollections, NKeep=30):
         yield_per_hour = details.yield_per_hour
         address = details.full_address
         streetID = details.street_id
-        #import ipdb; ipdb.set_trace()
+        if np.isnan(yield_per_hour) :
+            yield_per_hour = details.mint_price * 0.173/365/24
         try:
             propCollections = pd.DataFrame(details.collections)  
         except:
