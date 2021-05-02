@@ -49,6 +49,7 @@ def optimizeCollections(username, write=False):
     #=======================================================================
     dvData = allDVData.copy(deep=True)
     solutions={}
+    
     #-----------------------------------------------------------------------
     # High Yield DVs
     #-----------------------------------------------------------------------
@@ -94,7 +95,10 @@ def optimizeCollections(username, write=False):
     #===================================================================
     # Solution to Dictionary
     #===================================================================
+    if any(properties.yield_per_hour.isna()):
+       properties['yield_per_hour'] = properties.mint_price * 0.173/365/24
     baseYieldPerHour = properties.yield_per_hour.sum()
+    
     collectionBoost = {}
     yieldFromCollections = 0
     for collectionID, props in solutions.items():
